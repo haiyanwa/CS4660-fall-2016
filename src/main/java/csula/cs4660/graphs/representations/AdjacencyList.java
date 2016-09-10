@@ -19,6 +19,12 @@ public class AdjacencyList implements Representation {
     private Map<Node, Collection<Edge>> adjacencyList;
 
     public AdjacencyList(File file) {
+        File file = new File("src/main/java/csula/cs4660/test/test1");
+        Scanner read = new Scanner(file);
+        while(read.hasNext){
+            String line = read.nextLine().trim();
+        }
+
     }
 
     public AdjacencyList() {
