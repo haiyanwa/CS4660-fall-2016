@@ -29,19 +29,33 @@ public class AdjacencyList implements Representation {
     		//read nodes and edges data from the file
     		//String testfile = "src/csula/cs4660/graphs/test/test1";
     		//file = new File(testfile);
-    		//Representation adjList = new Representation(STRATEGY.ADJACENCY_LIST);
-    		String arr[] = readFile(file);
+    		//Representation adjacencyList = new Representation(STRATEGY.ADJACENCY_LIST);
+    		ArrayList<String> arr = readFile(file);
     		//0:3:4 means from node 0 to node 3, weight is 4
-    		for(int i=0;i<arr.length;i++){
-    			String s[] = arr[i].split(":");
+    		for(int i=0;i<arr.size();i++){
+    			String s[] = arr.get(i).split(":");
     			
     			//check if a new node or not
     			//when it's a new node, add it to the map as a new key
+    			
+    			//for the first line of record
+    			if(adjacencyList.isEmpty()){
+    				Node fromNode = new Node(s[0]);
+    				Node toNode = new Node(s[1]);
+    				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
+    				System.out.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
+    				ArrayList<Edge> edges = new ArrayList<>();
+    				edges.add(ed);
+    				adjacencyList.put(fromNode, edges);
+    				continue;
+    			}
+    			//from the second record
     			if(!adjacencyList.containsKey(s[0])){
     				//create new node if the key does not exist yet
     				Node fromNode = new Node(s[0]);
     				Node toNode = new Node(s[1]);
     				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
+    				System.out.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
     				ArrayList<Edge> edges = new ArrayList<>();
     				edges.add(ed);
     				adjacencyList.put(fromNode, edges);
@@ -75,22 +89,21 @@ public class AdjacencyList implements Representation {
     }
     
     //read a file in and return a String array which contains each line of the file
-    private static String[] readFile(File file) throws IOException{
+    private static ArrayList<String> readFile(File file) throws IOException{
     	
     	Scanner read = new Scanner(file);
     	//read first line
     	//need check??
     	String firstLine = read.nextLine().trim();
-    	int length = Integer.parseInt(firstLine);
-    	String data[] = new String[length];
-    	int i = 0;
+    	//int NodeNo = Integer.parseInt(firstLine);
+    	ArrayList<String> strarr = new ArrayList<>();
         while(read.hasNext()){
             String line = read.nextLine().trim();
             System.out.println(line);
-            data[i] = line;
+            strarr.add(line);
         }
         read.close();
-    	return data;
+    	return strarr;
     }
 
     @Override
