@@ -5,8 +5,10 @@ import csula.cs4660.graphs.Node;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +28,8 @@ public class AdjacencyList implements Representation {
     
     public AdjacencyList(File file) {
     	try{
+    		adjacencyList = new HashMap<Node, Collection<Edge>>();
+    		PrintWriter writer = new PrintWriter("src/csula/cs4660/graphs/test/log");
     		//read nodes and edges data from the file
     		//String testfile = "src/csula/cs4660/graphs/test/test1";
     		//file = new File(testfile);
@@ -39,11 +43,12 @@ public class AdjacencyList implements Representation {
     			//when it's a new node, add it to the map as a new key
     			
     			//for the first line of record
-    			if(adjacencyList.isEmpty()){
+    			// NullPointException
+    			if(adjacencyList == null){
     				Node fromNode = new Node(s[0]);
     				Node toNode = new Node(s[1]);
     				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
-    				System.out.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
+    				//writer.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
     				ArrayList<Edge> edges = new ArrayList<>();
     				edges.add(ed);
     				adjacencyList.put(fromNode, edges);
@@ -55,7 +60,7 @@ public class AdjacencyList implements Representation {
     				Node fromNode = new Node(s[0]);
     				Node toNode = new Node(s[1]);
     				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
-    				System.out.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
+    				//writer.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
     				ArrayList<Edge> edges = new ArrayList<>();
     				edges.add(ed);
     				adjacencyList.put(fromNode, edges);
