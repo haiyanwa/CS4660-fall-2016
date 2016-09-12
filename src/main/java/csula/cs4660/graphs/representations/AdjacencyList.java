@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 /**
  * Adjacency list is probably the most common implementation to store the unknown
  * loose graph
@@ -29,13 +31,12 @@ public class AdjacencyList implements Representation {
     public AdjacencyList(File file) {
     	try{
     		adjacencyList = new HashMap<Node, Collection<Edge>>();
-    		PrintWriter writer = new PrintWriter("src/csula/cs4660/graphs/test/log");
     		//read nodes and edges data from the file
-    		//String testfile = "src/csula/cs4660/graphs/test/test1";
-    		//file = new File(testfile);
-    		//Representation adjacencyList = new Representation(STRATEGY.ADJACENCY_LIST);
     		ArrayList<String> arr = readFile(file);
     		//0:3:4 means from node 0 to node 3, weight is 4
+    		Node fromNode;
+			Node toNode;
+			
     		for(int i=0;i<arr.size();i++){
     			String s[] = arr.get(i).split(":");
     			
@@ -43,24 +44,30 @@ public class AdjacencyList implements Representation {
     			//when it's a new node, add it to the map as a new key
     			
     			//for the first line of record
-    			// NullPointException
+    			try{
+					fromNode = new Node(Integer.parseInt(s[0]));
+					toNode = new Node(Integer.parseInt(s[1]));
+				}catch(NumberFormatException e){
+					fromNode = new Node(s[0]);
+					toNode = new Node(s[1]);
+				}
+    			
     			if(adjacencyList == null){
-    				Node fromNode = new Node(s[0]);
-    				Node toNode = new Node(s[1]);
-    				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
-    				//writer.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
+    				
+    				
+					Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
+    				//System.out.println("test:" + fromNode.getData() + " " + toNode.getData() + " " + Integer.parseInt(s[2]));
     				ArrayList<Edge> edges = new ArrayList<>();
     				edges.add(ed);
     				adjacencyList.put(fromNode, edges);
     				continue;
     			}
     			//from the second record
-    			if(!adjacencyList.containsKey(s[0])){
+    			if(!adjacencyList.containsKey(fromNode)){
     				//create new node if the key does not exist yet
-    				Node fromNode = new Node(s[0]);
-    				Node toNode = new Node(s[1]);
+    				
     				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
-    				//writer.println("test:" + fromNode + " " + toNode + " " + Integer.parseInt(s[2]));
+    				//System.out.println("test:" + fromNode.getData() + " " + toNode.getData() + " " + Integer.parseInt(s[2]));
     				ArrayList<Edge> edges = new ArrayList<>();
     				edges.add(ed);
     				adjacencyList.put(fromNode, edges);
@@ -68,21 +75,17 @@ public class AdjacencyList implements Representation {
     			//when the node is in the map already, find the key and just add value	
     			}else{
     				//add edges to existing node since the node exists already
-    				Set<Node> keynodes = adjacencyList.keySet();
-    				//loop through the map data structure
-    				adjacencyList.forEach((k, v)->{
-    					//find the node which matches the key, then just add the new
-    					//edge to the value (which is the ArrayList)
-    					if(k.equals(s[0])){
-    	    				Node toNode = new Node(s[1]);
-    	    				Edge ed = new Edge(k, toNode, Integer.parseInt(s[2]));
-    						ArrayList<Edge> edges = (ArrayList)adjacencyList.get(s[0]);
-    	    				edges.add(ed);
-    					}
-    				} );
     				
+    				ArrayList<Edge> edges = (ArrayList)adjacencyList.get(fromNode);
+    				Edge ed = new Edge(fromNode, toNode, Integer.parseInt(s[2]));
+    				edges.add(ed);
     			}
     		}
+    		adjacencyList.forEach((k,v)->{
+    			
+    			ArrayList<Edge> e = (ArrayList)v;
+    			System.out.println(e.toString());
+    		});
     		
     	}catch(IOException e){
     		System.out.println(e.getMessage());
@@ -127,7 +130,14 @@ public class AdjacencyList implements Representation {
     @Override
     public List<Node> neighbors(Node x) {
     	if(adjacencyList.containsKey(x)){
-    		return (ArrayList)adjacencyList.get(x);    	
+    		ArrayList<Edge> edges = (ArrayList)adjacencyList.get(x);
+    		ArrayList<Node> nodes = new ArrayList<Node>();
+    		for(int i=0;i<adjacencyList.get(x).size();i++){
+    			System.out.print("Neighbors: " + edges.get(i).toString());
+    		    nodes.add(edges.get(i).getTo());
+    		}
+    		System.out.println("");
+    		return nodes;    	
     	}
         return null;
     }
@@ -147,16 +157,25 @@ public class AdjacencyList implements Representation {
 
     @Override
     public boolean removeNode(Node x) {
-    	//when node x is a key, then remove it
-    	if(adjacencyList.containsKey(x)){
-    		adjacencyList.remove(x);
-    	}
+    	
     	//remove x from the value of any of the key nodes
     	adjacencyList.forEach((k, v)->{
-    		if(v.contains(x)){
-    			v.remove(x);
+    		ArrayList<Edge> edarr = (ArrayList)v;
+    		for(int i=0;i<edarr.size();i++){
+    		   if(edarr.get(i).getTo().equals(x)){
+    			   edarr.remove(i);
+    		   }
     		}
     	});
+    	
+    	//when node x is a key, then remove it
+    	
+    	if(adjacencyList.containsKey(x)){
+    		System.out.println("Found node and remove it");
+    		return adjacencyList.remove(x, adjacencyList.get(x));
+    		
+    	}
+    	
         return false;
     }
 
@@ -169,8 +188,14 @@ public class AdjacencyList implements Representation {
     	if(adjacencyList.containsKey(fn)){
     		//add the edge to the value ArrayList
     		ArrayList<Edge> arr = (ArrayList) adjacencyList.get(fn);
-    		arr.add(x);
-    		return true;
+    		if(arr.contains(x)){
+    			System.out.println("Error: This edge exists already!");
+    			return false;
+    		}else{
+    			arr.add(x);
+        		return true;
+    		}
+    		
     	}else{
     		System.out.println("Error: fromNode doesn't exist!");
     	}
@@ -189,8 +214,7 @@ public class AdjacencyList implements Representation {
     	}    	
     	//fromNode exists
     	if(adjacencyList.containsKey(fn)){
-    		adjacencyList.get(fn).remove(x);
-    		return true;
+    		return adjacencyList.get(fn).remove(x);
     	}
         return false;
     }
@@ -213,6 +237,10 @@ public class AdjacencyList implements Representation {
 
     @Override
     public Optional<Node> getNode(int index) {
+    	Node nd = new Node(index);
+    	if(adjacencyList.containsKey(nd)){
+    		System.out.println("Found " + nd.getData() );
+    	}
         return null;
     }
 }
