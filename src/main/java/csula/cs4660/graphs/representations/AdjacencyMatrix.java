@@ -113,6 +113,7 @@ public class AdjacencyMatrix implements Representation {
     @Override
     public boolean addNode(Node x) {
     	int n = (int)x.getData();
+    	
     	if(adjacencyMatrix[n] != null){
     		System.out.println("Error: THis node exists already!");
     	}else{
@@ -131,52 +132,33 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public boolean removeNode(Node x) {
+    	
     	int index = (int)x.getData();
-    	//number of rows and cols decrease 1
-    	int num = adjacencyMatrix.length -1;
-    	int[][] newMatrix = new int[num][num];
-    	
-    	int m = 0;
-    	for(int i=0;i<adjacencyMatrix[0].length;i++){
-    		//remove row x
-    		if(i==index){
-    			continue;
-    		}
-    		int n = 0;
-    		for(int j=0;j<adjacencyMatrix.length;j++){
-    			//remove col x
-    			if(j == index){
-    				continue;
-    			}else{
-    				newMatrix[m][n] = adjacencyMatrix[i][j];
-    				n++;
+        if(index <= adjacencyMatrix.length + 1){
+    		if(adjacencyMatrix[index][0] != -1){
+    			for(int i=0;i<adjacencyMatrix[0].length;i++){
+    	    		for(int j=0;j<adjacencyMatrix.length;j++){
+    	    			if((i==index) || (j == index)){
+    	    				//add -1 to show the node has been removed
+    	    				adjacencyMatrix[i][j] = -1;
+    	        		}
+    	    		}
+    	    	}
+    			System.out.println("matrix: ");
+        		for(int m=0;m<adjacencyMatrix[0].length;m++){
+    				for(int n=0;n<adjacencyMatrix.length;n++){
+    					System.out.print( adjacencyMatrix[m][n] + " ");
+    				}
+    				System.out.println();
     			}
+    			return true;
+    		}else{
+    			System.out.println("Error: this node has been removed!");
     		}
-    		m++;
+    		
+    	}else{
+    		System.out.println("Error: this node does not exist");
     	}
-    	try{
-    		//overwrite the new array to the old one
-    		int[][] adjacencyMatrix = new int[num][num];
-    		for(int k=0;k<adjacencyMatrix.length;k++){
-    			System.arraycopy(newMatrix[k], 0, adjacencyMatrix[k], 0, num);
-    		}
-    		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
-    		for(int p=0;p<adjacencyMatrix[0].length;p++){
-    			
-    			for(int q=0;q<adjacencyMatrix.length;q++){
-    				System.out.print( adjacencyMatrix[p][q] + " ");
-    			}
-    			System.out.println();
-    		}
-    		return true;
-    	}catch(IndexOutOfBoundsException e1 ){
-    		System.out.println(e1.getMessage());
-    	}catch(ArrayStoreException e2){
-    		System.out.println(e2.getMessage());
-    	}catch(NullPointerException e3){
-    		System.out.println(e3.getMessage());
-    	}    	
-    	
         return false;
     }
 
@@ -187,18 +169,25 @@ public class AdjacencyMatrix implements Representation {
         int index_t = (int)x.getTo().getData();
     	
         //check if the fromNode exists or not, if not return error
-        if(adjacencyMatrix[index_f] != null){
+        if((adjacencyMatrix[index_f] != null)||(adjacencyMatrix[index_f][0]==-1)){
         	//check if toNode exists or not
+        	//if exists then add 1 to the matrix
             if(adjacencyMatrix[index_t] != null){
-            	adjacencyMatrix[index_f][index_t] = 1;
-            	return true;
+            	if(adjacencyMatrix[index_f][index_t] == 0){
+            	    adjacencyMatrix[index_f][index_t] = 1;
+            	    return true;
+            	}else{
+            		System.out.println("Error: this edge exists already!");
+            	}
+            	
             }else{
+            	//when toNode not existing, then add toNode and 1 to the matrix
             	this.addNode(x.getTo());
             	adjacencyMatrix[index_f][index_t] = 1;
             	return true;
             }
         }else{
-        	System.out.println("Error: fromNode does not exists!");
+        	System.out.println("Error: fromNode does not exists or has been removed!");
         }
         
         return false;
