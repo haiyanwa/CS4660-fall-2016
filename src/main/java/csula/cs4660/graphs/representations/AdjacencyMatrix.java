@@ -135,16 +135,19 @@ public class AdjacencyMatrix implements Representation {
     	int index = (int)x.getData();
     	//number of rows and cols decrease 1
     	int num = adjacencyMatrix.length -1;
-    	int[][] newMatrix= new int[num][num];
+    	int[][] newMatrix = new int[num][num];
     	int m = 0;
     	int n = 0;
+    	
     	for(int i=0;i<adjacencyMatrix[0].length;i++){
-    		if((i==index)){
+    		//remove row x
+    		if(i==index){
     			continue;
     		}
     		m++;
     		System.out.print("m " + m + " ");
     		for(int j=0;i<adjacencyMatrix.length;j++){
+    			//remove col x
     			if(j==index){
     				continue;
     			}else{
@@ -154,18 +157,48 @@ public class AdjacencyMatrix implements Representation {
     			}
     		}
     	}
-    	System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
+    	try{
+    		//overwrite the new array to the old one
+    		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
+    		return true;
+    	}catch(IndexOutOfBoundsException e1 ){
+    		System.out.println(e1.getMessage());
+    	}catch(ArrayStoreException e2){
+    		System.out.println(e2.getMessage());
+    	}catch(NullPointerException e3){
+    		System.out.println(e3.getMessage());
+    	}    	
     	
         return false;
     }
 
     @Override
     public boolean addEdge(Edge x) {
+    	
+        int index_f = (int)x.getFrom().getData();
+        int index_t = (int)x.getTo().getData();
+    	
+        //check if the fromNode exists or not, if not return error
+        if(adjacencyMatrix[index_f] != null){
+        	//check if toNode exists or not
+            if(adjacencyMatrix[index_t] != null){
+            	adjacencyMatrix[index_f][index_t] = 1;
+            	return true;
+            }else{
+            	this.addNode(x.getTo());
+            	adjacencyMatrix[index_f][index_t] = 1;
+            	return true;
+            }
+        }else{
+        	System.out.println("Error: fromNode does not exists!");
+        }
+        
         return false;
     }
 
     @Override
     public boolean removeEdge(Edge x) {
+    	
         return false;
     }
 
