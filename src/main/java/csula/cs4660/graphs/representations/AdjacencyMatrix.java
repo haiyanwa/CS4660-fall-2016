@@ -198,6 +198,13 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public boolean removeEdge(Edge x) {
+    	int f = (int)x.getFrom().getData();
+    	int t = (int)x.getTo().getData();
+    	if((adjacencyMatrix[f] == null) ||(adjacencyMatrix[t] == null) ){
+    		System.out.println("Error: fromNode or toNode doesn't exist");
+    	}else{
+    		adjacencyMatrix[f][t] = 0;
+    	}
     	
         return false;
     }
