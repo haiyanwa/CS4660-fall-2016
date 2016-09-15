@@ -40,10 +40,6 @@ public class AdjacencyList implements Representation {
     		for(int i=0;i<arr.size();i++){
     			String s[] = arr.get(i).split(":");
     			
-    			//check if a new node or not
-    			//when it's a new node, add it to the map as a new key
-    			
-    			//for the first line of record
     			try{
 					fromNode = new Node(Integer.parseInt(s[0]));
 					toNode = new Node(Integer.parseInt(s[1]));
@@ -51,7 +47,8 @@ public class AdjacencyList implements Representation {
 					fromNode = new Node(s[0]);
 					toNode = new Node(s[1]);
 				}
-    			
+
+    			//for the first line of record
     			if(adjacencyList == null){
     				
     				
@@ -63,6 +60,9 @@ public class AdjacencyList implements Representation {
     				continue;
     			}
     			//from the second record
+    			
+    			//check if a new node or not
+    			//when it's a new node, add it to the map as a new key
     			if(!adjacencyList.containsKey(fromNode)){
     				//create new node if the key does not exist yet
     				
@@ -81,11 +81,11 @@ public class AdjacencyList implements Representation {
     				edges.add(ed);
     			}
     		}
-    		adjacencyList.forEach((k,v)->{
+    		//adjacencyList.forEach((k,v)->{
     			
-    			ArrayList<Edge> e = (ArrayList)v;
-    			System.out.println(e.toString());
-    		});
+    			//ArrayList<Edge> e = (ArrayList)v;
+    			//System.out.println(e.toString());
+    		//});
     		
     	}catch(IOException e){
     		System.out.println(e.getMessage());
