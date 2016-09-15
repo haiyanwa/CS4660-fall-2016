@@ -47,8 +47,8 @@ public class AdjacencyMatrix implements Representation {
         			
         			
         		}
+        		System.out.println("matrix: ");
         		for(int j=0;j<NodeNum;j++){
-    				System.out.println("matrix: ");
     				for(int k=0;k<NodeNum;k++){
     					System.out.print( adjacencyMatrix[j][k] + " ");
     				}
@@ -62,7 +62,6 @@ public class AdjacencyMatrix implements Representation {
     	}catch(IOException e){
     		System.out.println(e.getMessage());
     	}
-    	
     }
 
     public AdjacencyMatrix() {
@@ -78,7 +77,7 @@ public class AdjacencyMatrix implements Representation {
     	ArrayList<String> strarr = new ArrayList<>();
         while(read.hasNext()){
             String line = read.nextLine().trim();
-            System.out.println(line);
+            //System.out.println(line);
             strarr.add(line);
         }
         read.close();
@@ -136,30 +135,39 @@ public class AdjacencyMatrix implements Representation {
     	//number of rows and cols decrease 1
     	int num = adjacencyMatrix.length -1;
     	int[][] newMatrix = new int[num][num];
-    	int m = 0;
-    	int n = 0;
     	
+    	int m = 0;
     	for(int i=0;i<adjacencyMatrix[0].length;i++){
     		//remove row x
     		if(i==index){
     			continue;
     		}
-    		m++;
-    		System.out.print("m " + m + " ");
-    		for(int j=0;i<adjacencyMatrix.length;j++){
+    		int n = 0;
+    		for(int j=0;j<adjacencyMatrix.length;j++){
     			//remove col x
-    			if(j==index){
+    			if(j == index){
     				continue;
     			}else{
     				newMatrix[m][n] = adjacencyMatrix[i][j];
     				n++;
-    				System.out.println("n: " + n);
     			}
     		}
+    		m++;
     	}
     	try{
     		//overwrite the new array to the old one
+    		int[][] adjacencyMatrix = new int[num][num];
+    		for(int k=0;k<adjacencyMatrix.length;k++){
+    			System.arraycopy(newMatrix[k], 0, adjacencyMatrix[k], 0, num);
+    		}
     		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
+    		for(int p=0;p<adjacencyMatrix[0].length;p++){
+    			
+    			for(int q=0;q<adjacencyMatrix.length;q++){
+    				System.out.print( adjacencyMatrix[p][q] + " ");
+    			}
+    			System.out.println();
+    		}
     		return true;
     	}catch(IndexOutOfBoundsException e1 ){
     		System.out.println(e1.getMessage());
@@ -211,6 +219,13 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public int distance(Node from, Node to) {
+    	int f = (int)from.getData();
+    	int t = (int)to.getData();
+    	if((adjacencyMatrix[f] == null) ||(adjacencyMatrix[t] == null) ){
+    		System.out.println("Error: fromNode or toNode doesn't exist");
+    	}else{
+    		return 1;
+    	}
         return 0;
     }
 
