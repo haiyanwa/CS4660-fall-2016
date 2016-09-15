@@ -133,7 +133,7 @@ public class AdjacencyList implements Representation {
     		ArrayList<Edge> edges = (ArrayList)adjacencyList.get(x);
     		ArrayList<Node> nodes = new ArrayList<Node>();
     		for(int i=0;i<adjacencyList.get(x).size();i++){
-    			System.out.print("Neighbors: " + edges.get(i).toString());
+    			System.out.print("Neighbors: " + edges.get(i).getTo().toString());
     		    nodes.add(edges.get(i).getTo());
     		}
     		System.out.println("");
