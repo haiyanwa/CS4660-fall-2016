@@ -129,16 +129,42 @@ public class ObjectOriented implements Representation {
 
     @Override
     public boolean addEdge(Edge x) {
+    	
+    	//from node does not exist then give error
+    	if(!nodes.contains(x.getFrom())){
+    		System.out.println("Error: from node does not exist");
+    	}else{
+    		//if to node does not exist then add toNode then add the edge
+    		if(!nodes.contains(x.getTo())){
+    			addNode(x.getTo());
+    		}
+    		edges.add(x);
+    		return true;
+    	}
+    	
         return false;
     }
 
     @Override
     public boolean removeEdge(Edge x) {
+    	//from or to node does not exist then give error
+    	if((!nodes.contains(x.getFrom())) || (!nodes.contains(x.getTo()))){
+    		System.out.println("Error: fromNode or toNode not exists");
+    	}else{
+    		edges.remove(x);
+    	}
         return false;
     }
 
     @Override
     public int distance(Node from, Node to) {
+    	Iterator iter = edges.iterator();
+    	while(iter.hasNext()){
+    		Edge ed = (Edge)iter.next();
+    		if(ed.getFrom().equals(from) && ed.getTo().equals(to)){
+    			return ed.getValue();
+    		}
+    	}
         return 0;
     }
 
