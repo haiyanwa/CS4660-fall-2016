@@ -27,6 +27,9 @@ public class ObjectOriented implements Representation {
     Edge edge;
 
     public ObjectOriented(File file) {
+    	nodes = new ArrayList<Node>();
+		edges = new ArrayList<Edge>();
+		
     	try{
     		ArrayList<String> arr = readFile(file);
     		for(int i=1;i<arr.size();i++){
@@ -44,6 +47,10 @@ public class ObjectOriented implements Representation {
     			nodes.add(fromNode);
         		edges.add(edge);
         	}
+    		Iterator<Edge> it = edges.iterator();
+    		while(it.hasNext()){
+    			System.out.println("edge: " + it.next());
+    		}
     		
     	}catch(IOException e){
     		System.out.println(e.getMessage());
@@ -84,13 +91,16 @@ public class ObjectOriented implements Representation {
     @Override
     public List<Node> neighbors(Node x) {
     	Iterator<Edge> iterator = edges.iterator();
-    	LinkedList<Node> neighbor_nodes= new LinkedList<Node>();
+    	ArrayList<Node> neighbor_nodes= new ArrayList<Node>();
     	while(iterator.hasNext()){
     		Edge ed = iterator.next();
     		if(ed.getFrom().equals(x)){
-    			neighbor_nodes.add(ed.getTo());
-    			return neighbor_nodes;
-    		}
+ 
+    			neighbor_nodes.add(ed.getTo());    			
+    		}   		
+    	}
+    	if(neighbor_nodes != null){
+    		return neighbor_nodes;
     	}
         return null;
     }
@@ -113,14 +123,17 @@ public class ObjectOriented implements Representation {
     	if(nodes.contains(x)){
     		//remove node
     		nodes.remove(x);
+    		System.out.println("removed node" + x.getData());
     		//remove edge
     		Iterator<Edge> iterator = edges.iterator();
     		while(iterator.hasNext()){
         		Edge ed = iterator.next();
         		if(ed.getFrom().equals(x)||ed.getTo().equals(x)){
-        			edges.remove(ed);
+        			//use iterator.remove() to avoid ConcurrentModificationException
+        			iterator.remove();
         		}
         	}
+    		return true;
     	}else{
     		System.out.println("Error: this node does not exist!");
     	}
