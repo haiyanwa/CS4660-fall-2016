@@ -104,6 +104,7 @@ public class AdjacencyList implements Representation {
     	//need check??
     	String firstLine = read.nextLine().trim();
     	//int NodeNo = Integer.parseInt(firstLine);
+    	System.out.println("list");
     	ArrayList<String> strarr = new ArrayList<>();
         while(read.hasNext()){
             String line = read.nextLine().trim();

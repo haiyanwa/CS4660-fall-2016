@@ -112,19 +112,24 @@ public class AdjacencyMatrix implements Representation {
 
     @Override
     public boolean addNode(Node x) {
-    	int n = (int)x.getData();
+    	//new matrix length
+    	int n = (int)x.getData() + 1;
     	
-    	if(adjacencyMatrix[n] != null){
+    	if( n < adjacencyMatrix.length){
     		System.out.println("Error: THis node exists already!");
     	}else{
+    		int[][] newMatrix = new int[n][n];
     		//existing matrix increase to n x n
-    		for(int i=0;i<adjacencyMatrix.length;i++){
-    			adjacencyMatrix[i][n] = 0;
+    		for(int i=0;i<adjacencyMatrix[0].length;i++){
+    			for(int j=0;j<adjacencyMatrix.length;j++){
+    				//copy from old matrix to new
+        			newMatrix[i][j] = adjacencyMatrix[i][j];
+        		}
+    			//new col (n-1) is the index of the last element
+    			newMatrix[i][n-1] = 0;
     		}
-    		//add last row for nth node
-    		for(int j=0;j<n;j++){
-    			adjacencyMatrix[n][j] = n; 
-    		}
+    		adjacencyMatrix = new int[n][n];
+    		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, n);
     		return true;		
     	}
         return false;

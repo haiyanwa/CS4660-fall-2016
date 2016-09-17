@@ -48,6 +48,7 @@ public class ObjectOriented implements Representation {
         		edges.add(edge);
         	}
     		Iterator<Edge> it = edges.iterator();
+    		System.out.println("Edges:");
     		while(it.hasNext()){
     			System.out.println("edge: " + it.next());
     		}
@@ -109,7 +110,7 @@ public class ObjectOriented implements Representation {
     public boolean addNode(Node x) {
     	//check if node x exists or not
     	if(nodes.contains(x)){
-    		System.out.println("Error: this node exists already!");
+    		System.out.println("Error: this node exists already!" + x.toString());
     	}else{
     		nodes.add(x);
     		return true;
@@ -147,6 +148,14 @@ public class ObjectOriented implements Representation {
     	if(!nodes.contains(x.getFrom())){
     		System.out.println("Error: from node does not exist");
     	}else{
+    		//if edge exists then reture error
+    		Iterator<Edge> itr = edges.iterator();
+    		while(itr.hasNext()){
+    			Edge ed = itr.next();
+    			if(ed.equals(x)){
+    				return false;
+    			}
+    		}    		
     		//if to node does not exist then add toNode then add the edge
     		if(!nodes.contains(x.getTo())){
     			addNode(x.getTo());
@@ -164,7 +173,10 @@ public class ObjectOriented implements Representation {
     	if((!nodes.contains(x.getFrom())) || (!nodes.contains(x.getTo()))){
     		System.out.println("Error: fromNode or toNode not exists");
     	}else{
-    		edges.remove(x);
+    		//check if edge exists or not, if exists then remove
+    		if(edges.remove(x)){
+    			return true;
+    		}
     	}
         return false;
     }
