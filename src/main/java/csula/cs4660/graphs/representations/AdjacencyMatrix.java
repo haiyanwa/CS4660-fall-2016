@@ -42,7 +42,7 @@ public class AdjacencyMatrix implements Representation {
     					//fromNode = new Node(s[0]);
     					//toNode = new Node(s[1]);
     				//}
-    				System.out.println("test [" + fromNode.getData() + "][" + toNode.getData() + "]" +  Integer.parseInt(s[2]));
+    				//System.out.println("[" + fromNode.getData() + "][" + toNode.getData() + "]" +  Integer.parseInt(s[2]));
         			adjacencyMatrix[(int)fromNode.getData()][(int)toNode.getData()] = 1;
         			
         			
