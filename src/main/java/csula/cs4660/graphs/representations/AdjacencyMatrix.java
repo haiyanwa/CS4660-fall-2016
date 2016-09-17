@@ -47,13 +47,13 @@ public class AdjacencyMatrix implements Representation {
         			
         			
         		}
-        		System.out.println("matrix: ");
-        		for(int j=0;j<NodeNum;j++){
-    				for(int k=0;k<NodeNum;k++){
-    					System.out.print( adjacencyMatrix[j][k] + " ");
-    				}
-    				System.out.println();
-    			}
+        		//System.out.println("matrix: ");
+        		//for(int j=0;j<NodeNum;j++){
+    				//for(int k=0;k<NodeNum;k++){
+    					//System.out.print( adjacencyMatrix[j][k] + " ");
+    				//}
+    				//System.out.println();
+    			//}
     		}catch(NumberFormatException e){
     			System.out.println("First line of the file " + file + " needs to be a numeric number");
     		}
