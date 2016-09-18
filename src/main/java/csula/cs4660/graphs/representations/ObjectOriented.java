@@ -32,7 +32,7 @@ public class ObjectOriented implements Representation {
 		
     	try{
     		ArrayList<String> arr = readFile(file);
-    		for(int i=1;i<arr.size();i++){
+    		for(int i=0;i<arr.size();i++){
     			String s[] = arr.get(i).split(":");
     			try{
     				//numaric node only
