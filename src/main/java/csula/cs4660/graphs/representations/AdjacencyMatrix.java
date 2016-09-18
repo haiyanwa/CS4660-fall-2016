@@ -75,13 +75,13 @@ public class AdjacencyMatrix implements Representation {
         			adjacencyMatrix[fnode_index][tnode_index] = 1;
         		}
         		
-        		System.out.println("matrix: ");
-        		for(int j=0;j<NodeNum;j++){
-    				for(int k=0;k<NodeNum;k++){
-    					System.out.print( adjacencyMatrix[j][k] + " ");
-    				}
-    				System.out.println();
-    			}
+        		//System.out.println("matrix: ");
+        		//for(int j=0;j<NodeNum;j++){
+    				//for(int k=0;k<NodeNum;k++){
+    					//System.out.print( adjacencyMatrix[j][k] + " ");
+    				//}
+    				//System.out.println();
+    			//}
     		}catch(NumberFormatException e){
     			System.out.println("First line of the file " + file + " needs to be a numeric number");
     		}
@@ -200,13 +200,13 @@ public class AdjacencyMatrix implements Representation {
     		//copy back to adjacencyMatrix
     		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
     		//debug
-    		System.out.println("matrix: ");
-    		for(int j=0;j<num;j++){
-				for(int k=0;k<num;k++){
-					System.out.print( adjacencyMatrix[j][k] + " ");
-				}
-				System.out.println();
-			}
+    		//System.out.println("matrix: ");
+    		//for(int j=0;j<num;j++){
+				//for(int k=0;k<num;k++){
+					//System.out.print( adjacencyMatrix[j][k] + " ");
+				//}
+				//System.out.println();
+			//}
     		return true;
     	}
         return false;
@@ -260,13 +260,13 @@ public class AdjacencyMatrix implements Representation {
     		adjacencyMatrix = new int[num][num];
     		System.arraycopy(newMatrix, 0, adjacencyMatrix, 0, num);
     		//debug
-    		System.out.println("matrix: after removenode");
-    		for(int i=0;i<num;i++){
-				for(int k=0;k<num;k++){
-					System.out.print( adjacencyMatrix[i][k] + " ");
-				}
-				System.out.println();
-			}
+    		//System.out.println("matrix: after removenode");
+    		//for(int i=0;i<num;i++){
+				//for(int k=0;k<num;k++){
+					//System.out.print( adjacencyMatrix[i][k] + " ");
+				//}
+				//System.out.println();
+			//}
     		return true;
 
     	}else{
