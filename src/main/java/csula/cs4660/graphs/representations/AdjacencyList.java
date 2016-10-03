@@ -140,7 +140,8 @@ public class AdjacencyList implements Representation {
     		System.out.println("");
     		return nodes;    	
     	}
-        return null;
+    	return new ArrayList<Node>();
+        //return null;
     }
 
     @Override

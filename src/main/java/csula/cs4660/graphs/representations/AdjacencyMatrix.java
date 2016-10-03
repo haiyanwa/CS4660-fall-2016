@@ -6,6 +6,8 @@ import csula.cs4660.graphs.Node;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -148,13 +150,22 @@ public class AdjacencyMatrix implements Representation {
     			node_arr.add(nodes[i]);
     		}
     	}
+    	
     	if(node_arr != null){
+    		Collections.sort(node_arr, new Comparator<Node>(){
+    			@Override
+    			public int compare(Node n1, Node n2){
+    				return n1.getData().toString().compareTo(n2.getData().toString());
+    			}
+    		});
     		return node_arr;
     	}
     	
         return null;
     }
-
+    
+    
+    
     @Override
     public boolean addNode(Node x) {
     	//new matrix length
